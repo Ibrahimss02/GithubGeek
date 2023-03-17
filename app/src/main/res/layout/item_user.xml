@@ -18,8 +18,7 @@
         android:layout_height="wrap_content"
         style="@style/Widget.Material3.CardView.Filled"
         app:cardCornerRadius="16dp"
-        android:layout_margin="4dp"
-        android:onClick="@{() -> onClickListener.onClick(user.url)}">
+        android:layout_margin="4dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -34,6 +33,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="@id/tv_user_name"
                 tools:src="@tools:sample/avatars"
+                android:contentDescription="@string/user_avatar"
                 loadImgFromUrl="@{user.avatarUrl}"/>
 
             <com.google.android.material.textview.MaterialTextView
@@ -49,21 +49,26 @@
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/tv_user_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.Material3.HeadlineMedium"
                 app:layout_constraintTop_toBottomOf="@id/tv_user_type"
                 app:layout_constraintStart_toStartOf="@id/tv_user_type"
+                app:layout_constraintEnd_toStartOf="@id/btn_check_profile"
+                android:ellipsize="marquee"
+                android:maxLines="1"
                 tools:text="Ibrahim Sambata"
                 android:text="@{user.username}"/>
 
-            <Button
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_check_profile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="?attr/materialIconButtonFilledStyle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
+                android:onClick="@{() -> onClickListener.onClick(user.username)}"
                 app:icon="@drawable/baseline_keyboard_arrow_right_24"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

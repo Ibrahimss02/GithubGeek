@@ -6,10 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import com.ibrahimss.githubgeek.adapter.OnUserItemClickListener
 import com.ibrahimss.githubgeek.R
 import com.ibrahimss.githubgeek.adapter.UserAdapter
 import com.ibrahimss.githubgeek.databinding.FragmentUserListBinding
+import com.ibrahimss.githubgeek.viewmodels.UserListViewModel
 import com.robinhood.ticker.TickerUtils
 
 class UserListFragment : Fragment() {
@@ -27,10 +30,10 @@ class UserListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
 
-        val adapter = UserAdapter(OnUserItemClickListener {
-            // TODO: Navigate to User Detail
+        val adapter = UserAdapter(OnUserItemClickListener { username ->
+            findNavController().navigate(UserListFragmentDirections.actionUserListFragmentToUserDetailFragment(username))
         })
 
         binding.apply {
@@ -53,14 +56,44 @@ class UserListFragment : Fragment() {
                     isShow = false
                 }
             }
+
+            var isShowingSearchTextInput = false
+            btnSearch.setOnClickListener {
+                isShowingSearchTextInput = !isShowingSearchTextInput
+                if (isShowingSearchTextInput) {
+                    binding.tilSearch.visibility = View.VISIBLE
+                    binding.etSearch.requestFocus()
+                } else {
+                    binding.tilSearch.visibility = View.GONE
+                }
+            }
+        }
+
+        viewModel.searchQuery.observe(viewLifecycleOwner) {
+            if (it.isNotEmpty()) {
+                viewModel.searchUser(it)
+            } else {
+                viewModel.fetchUsers()
+            }
         }
 
         viewModel.loading.observe(viewLifecycleOwner) {
             if (it) {
-                binding.tvGreetProgress.text = getString(R.string.greet_loading)
+                binding.progressIndicator.visibility = View.VISIBLE
             } else {
                 binding.progressIndicator.visibility = View.GONE
-                binding.tvGreetProgress.text = "Looking for someone? ^_____^"
+            }
+        }
+
+        viewModel.showHeadlineMessage.observe(viewLifecycleOwner) {
+            if (it.getContentIfNotHandled() == true) {
+                binding.tvGreetProgress.text = getString(R.string.greet_loading_success)
+            }
+        }
+
+        viewModel.snackbarMessage.observe(viewLifecycleOwner) {
+            if (it.getContentIfNotHandled() != null) {
+                Snackbar.make(binding.root, it.peekContent(), Snackbar.LENGTH_SHORT).show()
             }
         }
     }

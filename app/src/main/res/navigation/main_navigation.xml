@@ -9,5 +9,18 @@
         android:id="@+id/userListFragment"
         android:name="com.ibrahimss.githubgeek.views.UserListFragment"
         android:label="UserListFragment"
-        tools:layout="@layout/fragment_user_list"/>
+        tools:layout="@layout/fragment_user_list">
+        <action
+            android:id="@+id/action_userListFragment_to_userDetailFragment"
+            app:destination="@id/userDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userDetailFragment"
+        android:name="com.ibrahimss.githubgeek.views.UserDetailFragment"
+        android:label="UserDetailFragment"
+        tools:layout="@layout/fragment_user_detail">
+        <argument
+            android:name="username"
+            app:argType="string" />
+    </fragment>
 </navigation>

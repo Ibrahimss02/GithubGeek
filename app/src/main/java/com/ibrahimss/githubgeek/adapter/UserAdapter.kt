@@ -15,27 +15,28 @@ class UserAdapter(private val clickListener: OnUserItemClickListener): ListAdapt
     inner class UserViewHolder(private val binding: ItemUserBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(user: UserResponse, position: Int) {
             binding.user = user
+            binding.onClickListener = clickListener
             binding.executePendingBindings()
 
             val cardBackgroundColor = when (position % 3) {
                 0 -> {
                     val typedValue = TypedValue()
-                    binding.root.context.theme.resolveAttribute(com.google.android.material.R.attr.colorPrimaryContainer, typedValue, true);
+                    binding.root.context.theme.resolveAttribute(com.google.android.material.R.attr.colorPrimaryContainer, typedValue, true)
                     ContextCompat.getColorStateList(binding.root.context, typedValue.resourceId)
                 }
                 1 -> {
                     val typedValue = TypedValue()
-                    binding.root.context.theme.resolveAttribute(com.google.android.material.R.attr.colorSecondaryContainer, typedValue, true);
+                    binding.root.context.theme.resolveAttribute(com.google.android.material.R.attr.colorSecondaryContainer, typedValue, true)
                     ContextCompat.getColorStateList(binding.root.context, typedValue.resourceId)
                 }
                 2 -> {
                     val typedValue = TypedValue()
-                    binding.root.context.theme.resolveAttribute(com.google.android.material.R.attr.colorTertiaryContainer, typedValue, true);
+                    binding.root.context.theme.resolveAttribute(com.google.android.material.R.attr.colorTertiaryContainer, typedValue, true)
                     ContextCompat.getColorStateList(binding.root.context, typedValue.resourceId)
                 }
                 else -> {
                     val typedValue = TypedValue()
-                    binding.root.context.theme.resolveAttribute(com.google.android.material.R.attr.colorPrimaryContainer, typedValue, true);
+                    binding.root.context.theme.resolveAttribute(com.google.android.material.R.attr.colorPrimaryContainer, typedValue, true)
                     ContextCompat.getColorStateList(binding.root.context, typedValue.resourceId)
                 }
             }
@@ -52,6 +53,6 @@ class UserAdapter(private val clickListener: OnUserItemClickListener): ListAdapt
     }
 }
 
-class OnUserItemClickListener(val clickListener: (userUrl: String) -> Unit) {
-    fun onClick(userUrl: String) = clickListener(userUrl)
+class OnUserItemClickListener(val clickListener: (username: String) -> Unit) {
+    fun onClick(username: String) = clickListener(username)
 }

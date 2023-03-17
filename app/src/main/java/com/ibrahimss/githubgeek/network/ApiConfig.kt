@@ -11,7 +11,7 @@ private const val BASE_URL = "https://api.github.com/"
 val authInterceptor = Interceptor { chain ->
     val req = chain.request()
     val requestHeaders = req.newBuilder()
-        .addHeader("Authorization", "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")
+        .addHeader("Authorization", "token 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")
         .build()
     chain.proceed(requestHeaders)
 }

@@ -70,8 +70,6 @@ dependencies {
     // Glide
     implementation("com.github.bumptech.glide:glide:4.13.0")
 
-    // Circle ImageView
-    implementation("de.hdodenhof:circleimageview:3.1.0")
-
+    // TickerView
     implementation ("com.robinhood.ticker:ticker:2.0.4")
 }

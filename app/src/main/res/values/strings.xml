@@ -1,7 +1,18 @@
 <resources>
     <string name="app_name">GithubGeek</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="main_greet">Hello!</string>
-    <string name="greet_loading">Fetching Github User...</string>
+    <string name="greet_loading">Fetching Github User…</string>
+    <string name="label_following">Following</string>
+    <string name="label_followers">Followers</string>
+    <string name="search_user">Search User</string>
+    <string name="search_hint">Input user</string>
+    <string name="label_search_user">Search User</string>
+    <string name="greet_loading_success">Looking for someone? ^__^</string>
+    <string name="no_data">No Data</string>
+    <string name="visit_profile">Visit Full Profile</string>
+    <string name="user_avatar">User Avatar</string>
+    <string name="user_blog">User Blog</string>
+    <string name="user_location">User Location</string>
+    <string name="user_company">User Company</string>
 </resources>
