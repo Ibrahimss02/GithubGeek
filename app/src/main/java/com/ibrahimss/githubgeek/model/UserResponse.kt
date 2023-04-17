@@ -1,17 +1,13 @@
-package com.ibrahimss.githubgeek.data.model
+package com.ibrahimss.githubgeek.model
 
 import android.os.Parcelable
-import androidx.room.Entity
-import androidx.room.PrimaryKey
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import kotlinx.parcelize.Parcelize
 
-@Entity(tableName = "user_table")
 @Parcelize
 @JsonClass(generateAdapter = true)
 data class UserResponse(
-    @PrimaryKey
     val id: Int,
 
     @Json(name = "login")

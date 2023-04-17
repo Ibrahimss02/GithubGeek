@@ -1,15 +1,12 @@
 package com.ibrahimss.githubgeek.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.ibrahimss.githubgeek.data.model.SearchResponse
-import com.ibrahimss.githubgeek.data.model.UserResponse
-import com.ibrahimss.githubgeek.data.remote.GithubApi
-import com.ibrahimss.githubgeek.data.preferences.SettingPreferences
+import com.ibrahimss.githubgeek.model.SearchResponse
+import com.ibrahimss.githubgeek.model.UserResponse
+import com.ibrahimss.githubgeek.network.GithubApi
 import com.ibrahimss.githubgeek.util.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,8 +15,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class UserListViewModel: ViewModel() {
-
-    lateinit var pref: SettingPreferences
 
     private val _users = MutableLiveData<List<UserResponse>>()
     val users: LiveData<List<UserResponse>>
@@ -58,14 +53,12 @@ class UserListViewModel: ViewModel() {
                         _showHeadlineMessage.value = Event(true)
                     } else {
                         _snackbarMessage.value = Event("Something went wrong: ${response.errorBody()}")
-                        Log.e(this::class.java.simpleName, response.errorBody().toString())
                     }
                     _loading.value = false
                 }
 
                 override fun onFailure(call: Call<List<UserResponse>>, t: Throwable) {
                     _snackbarMessage.value = Event("Something went wrong: ${t.message}")
-                    Log.e(this::class.java.simpleName, t.message.toString())
                     _loading.value = false
                 }
             })
@@ -108,15 +101,5 @@ class UserListViewModel: ViewModel() {
         }
 
         isSorted = !isSorted
-    }
-
-    fun getThemeSettings(): LiveData<Boolean> {
-        return pref.getThemeSetting().asLiveData()
-    }
-
-    fun saveThemeSetting(isDarkModeActive: Boolean) {
-        viewModelScope.launch {
-            pref.saveThemeSetting(isDarkModeActive)
-        }
     }
 }

@@ -9,10 +9,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.ibrahimss.githubgeek.R
 import com.ibrahimss.githubgeek.adapter.UserAdapter
-import com.ibrahimss.githubgeek.data.model.UserResponse
+import com.ibrahimss.githubgeek.model.UserResponse
 
 @BindingAdapter("userList")
 fun RecyclerView.setUserList(users: List<UserResponse>?) {
@@ -56,7 +54,7 @@ fun TextView.loadNullableText(text: String?) {
  * Adapter to check if it's data not null. Otherwise, hide the view. For Text data only.
  */
 @BindingAdapter("visibilityOnDataNullable")
-fun View.visibilityOnDataNullable(text: Any?) {
+fun View.visibilityOnDataNullable(text: String?) {
     if (text != null && text != "") {
         this.visibility = View.VISIBLE
     } else {
@@ -73,14 +71,5 @@ fun TextView.loadNameOtherwiseUsername(name: String?, username: String?) {
         this.text = name
     } else {
         this.text = username
-    }
-}
-
-@BindingAdapter("srcOnState")
-fun FloatingActionButton.setIconSourceBasedOnState(state: Boolean) {
-    if (state) {
-        this.setImageResource(R.drawable.baseline_favorite_24)
-    } else {
-        this.setImageResource(R.drawable.baseline_favorite_border_24)
     }
 }

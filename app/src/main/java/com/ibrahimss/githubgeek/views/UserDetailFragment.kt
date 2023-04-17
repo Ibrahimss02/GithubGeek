@@ -1,44 +1,37 @@
 package com.ibrahimss.githubgeek.views
 
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.StringRes
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
 import com.ibrahimss.githubgeek.R
 import com.ibrahimss.githubgeek.adapter.UserDetailPagerAdapter
-import com.ibrahimss.githubgeek.data.DefaultUserRepository
-import com.ibrahimss.githubgeek.data.local.UserDataSource
-import com.ibrahimss.githubgeek.data.local.UserDatabase
 import com.ibrahimss.githubgeek.databinding.FragmentUserDetailBinding
 import com.ibrahimss.githubgeek.util.OnUserItemCallback
 import com.ibrahimss.githubgeek.util.viewModelsFactory
 import com.ibrahimss.githubgeek.viewmodels.UserDetailViewModel
-import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
 
-class UserDetailFragment : Fragment(), View.OnClickListener {
+
+class UserDetailFragment : Fragment() {
+
+    companion object {
+        @StringRes
+        private val TAB_TITLES = intArrayOf(
+            R.string.label_following,
+            R.string.label_followers
+        )
+    }
 
     private lateinit var binding: FragmentUserDetailBinding
     private val viewModel: UserDetailViewModel by viewModelsFactory {
-        val db = UserDatabase.getDatabase(requireContext())
-        val userDataSource = UserDataSource(db.userDao())
-        val repository = DefaultUserRepository(userDataSource)
         val username = requireArguments().getString("username")!!
-        UserDetailViewModel(repository, requireActivity().application, username)
+        UserDetailViewModel(username)
     }
 
     var username: String? = null
@@ -93,12 +86,11 @@ class UserDetailFragment : Fragment(), View.OnClickListener {
             }
         }
 
-        val userDetailPagerAdapter =
-            UserDetailPagerAdapter(this, usernameArg, object : OnUserItemCallback {
-                override fun onUserItemClicked(username: String) {
-                    viewModel.fetchUserDetail(username)
-                }
-            })
+        val userDetailPagerAdapter = UserDetailPagerAdapter(this, usernameArg, object: OnUserItemCallback {
+            override fun onUserItemClicked(username: String) {
+                viewModel.fetchUserDetail(username)
+            }
+        })
 
         val viewPager = binding.viewPager
         viewPager.adapter = userDetailPagerAdapter
@@ -107,89 +99,10 @@ class UserDetailFragment : Fragment(), View.OnClickListener {
             tab.text = resources.getString(TAB_TITLES[position])
         }.attach()
 
-        binding.btnVisitProfile.setOnClickListener(this)
-        binding.fabFavorite.setOnClickListener(this)
-        binding.btnShare.setOnClickListener(this)
-    }
-
-    override fun onClick(view: View?) {
-        when (view?.id) {
-            R.id.btn_visit_profile -> {
-                val i = Intent(Intent.ACTION_VIEW)
-                i.data = Uri.parse("https://github.com/${this.username}")
-                startActivity(i)
-            }
-
-            R.id.fab_favorite -> {
-                Snackbar.make(binding.root, "Favorite", Snackbar.LENGTH_SHORT).apply {
-                    if (viewModel.isFavorite.value == true) {
-                        viewModel.deleteUserFromFavorite()
-                        this.setText("User deleted from favorite")
-                    } else {
-                        viewModel.addToFavorite()
-                        this.setText("User added to favorite")
-                    }
-                }
-                    .show()
-            }
-
-            R.id.btn_share -> {
-                Glide.with(this)
-                    .asBitmap()
-                    .load(viewModel.user.value?.avatarUrl)
-                    .into(object : CustomTarget<Bitmap>() {
-                        override fun onResourceReady(
-                            resource: Bitmap,
-                            transition: Transition<in Bitmap>?
-                        ) {
-                            val intent = Intent(Intent.ACTION_SEND).apply {
-                                type = "image/*"
-                                putExtra(Intent.EXTRA_STREAM, getLocalBitmapUri(resource))
-                                putExtra(
-                                    Intent.EXTRA_TEXT,
-                                    "Hey, you better check out this guy on Github. ${viewModel.user.value?.username}\n\nhttps://github.com/${viewModel.user.value?.username}"
-                                )
-                            }
-                            startActivity(Intent.createChooser(intent, "Share Image"))
-                        }
-
-                        override fun onLoadCleared(placeholder: Drawable?) {}
-
-                    })
-
-            }
+        binding.btnVisitProfile.setOnClickListener {
+            val i = Intent(Intent.ACTION_VIEW)
+            i.data = Uri.parse("https://github.com/${this.username}")
+            startActivity(i)
         }
-    }
-
-    /**
-     * Function to get the URI of the bitmap fetched from url by Glide
-     */
-    private fun getLocalBitmapUri(bitmap: Bitmap): Uri? {
-        var bitmapUri: Uri? = null
-        try {
-            val file = File(
-                requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                "share_image_github_geek_" + System.currentTimeMillis() + ".png"
-            )
-            val out = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.PNG, 90, out)
-            out.close()
-            bitmapUri = FileProvider.getUriForFile(
-                requireContext(),
-                requireContext().packageName + ".provider",
-                file
-            )
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-        return bitmapUri
-    }
-
-    companion object {
-        @StringRes
-        private val TAB_TITLES = intArrayOf(
-            R.string.label_following,
-            R.string.label_followers
-        )
     }
 }

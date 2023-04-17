@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.ibrahimss.githubgeek.databinding.ItemUserBinding
-import com.ibrahimss.githubgeek.data.model.UserResponse
+import com.ibrahimss.githubgeek.model.UserResponse
 import com.ibrahimss.githubgeek.util.UserDiffUtilCallback
 
 class UserAdapter(private val clickListener: OnUserItemClickListener): ListAdapter<UserResponse, UserAdapter.UserViewHolder>(UserDiffUtilCallback()) {

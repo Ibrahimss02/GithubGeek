@@ -1,7 +1,7 @@
-package com.ibrahimss.githubgeek.data.remote
+package com.ibrahimss.githubgeek.network
 
-import com.ibrahimss.githubgeek.data.model.SearchResponse
-import com.ibrahimss.githubgeek.data.model.UserResponse
+import com.ibrahimss.githubgeek.model.SearchResponse
+import com.ibrahimss.githubgeek.model.UserResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
