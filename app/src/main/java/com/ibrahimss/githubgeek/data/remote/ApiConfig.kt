@@ -1,5 +1,6 @@
-package com.ibrahimss.githubgeek.network
+package com.ibrahimss.githubgeek.data.remote
 
+import com.ibrahimss.githubgeek.BuildConfig
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.Interceptor
@@ -11,7 +12,7 @@ private const val BASE_URL = "https://api.github.com/"
 val authInterceptor = Interceptor { chain ->
     val req = chain.request()
     val requestHeaders = req.newBuilder()
-        .addHeader("Authorization", "token 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")
+        .addHeader("Authorization", "token ${BuildConfig.API_KEY}")
         .build()
     chain.proceed(requestHeaders)
 }

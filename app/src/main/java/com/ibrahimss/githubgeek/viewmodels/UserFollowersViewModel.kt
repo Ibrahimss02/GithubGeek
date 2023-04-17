@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ibrahimss.githubgeek.model.UserResponse
-import com.ibrahimss.githubgeek.network.GithubApi
+import com.ibrahimss.githubgeek.data.model.UserResponse
+import com.ibrahimss.githubgeek.data.remote.GithubApi
 import com.ibrahimss.githubgeek.util.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

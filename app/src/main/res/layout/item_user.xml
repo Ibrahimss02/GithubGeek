@@ -6,7 +6,7 @@
     <data>
         <variable
             name="user"
-            type="com.ibrahimss.githubgeek.model.UserResponse" />
+            type="com.ibrahimss.githubgeek.data.model.UserResponse" />
         <variable
             name="onClickListener"
             type="com.ibrahimss.githubgeek.adapter.OnUserItemClickListener" />
